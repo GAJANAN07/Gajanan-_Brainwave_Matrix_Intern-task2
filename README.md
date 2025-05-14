@@ -1,6 +1,10 @@
 E-commerce Website Report
  By Gajanan Purud
  Project Title
+ 
+ ![image](https://github.com/user-attachments/assets/a7f7bc5a-cf54-4c61-809d-e3b65f5669fc)
+ 
+utm_source=share&utm_medium=member_android&rcm=ACoAAFm4w4IBjFRqZRuRt3UTwKWKUBFdSJwJ5t8
  Gajanan's Store - A Responsive E-commerce Website
  Objective
  To design and implement a functional, responsive e-commerce website using
