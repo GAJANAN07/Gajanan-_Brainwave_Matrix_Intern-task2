@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gajanan's Store - Your Favorite Online Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #222;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    nav a {
+      color: #fff;
+      margin-left: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      background: url('https://images.unsplash.com/photo-1585386959984-a41552260c61') center/cover no-repeat;
+      color: white;
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+    }
+
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .product-card h3, .product-card p {
+      margin: 0.5rem 1rem;
+    }
+
+    .product-card button {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.5rem 1rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .product-card button:hover {
+      background-color: #0056b3;
+    }
+
+    .cart {
+      background: #fff;
+      margin: 2rem;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gajanan's Store</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#products">Shop</a>
+      <a href="#cart">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Welcome to Gajanan's Store</h2>
+    <p>Your one-stop shop for electronics, accessories, and gadgets!</p>
+  </section>
+
+  <main>
+    <section id="products" class="product-list"></section>
+
+    <section id="cart" class="cart">
+      <h2>Your Cart</h2>
+      <ul id="cart-items"></ul>
+      <p><strong>Total:</strong> $<span id="cart-total">0.00</span></p>
+      <button onclick="clearCart()">Clear Cart</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Gajanan's Store. All rights reserved.</p>
+    <p>Contact: <a href="mailto:support@gajanansstore.com" style="color: #ffd700; text-decoration: none;">support@gajanansstore.com</a></p>
+  </footer>
+
+  <script>
+    const products = [
+      { id: 1, name: "Wireless Mouse", price: 25.99, image: "https://images.unsplash.com/photo-1587829741301-dc798b82b0c8", description: "Smooth and responsive wireless mouse for everyday use." },
+      { id: 2, name: "Mechanical Keyboard", price: 74.99, image: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809", description: "Tactile mechanical keyboard with RGB lighting." },
+      { id: 3, name: "Gaming Headset", price: 59.99, image: "https://images.unsplash.com/photo-1580894732444-8ecded7900ae", description: "Crystal-clear sound with noise cancelling mic." },
+      { id: 4, name: "Smart LED Bulb", price: 19.99, image: "https://images.unsplash.com/photo-1573497491208-6b1acb260507", description: "Control your lights with your voice or smartphone." },
+      { id: 5, name: "Phone Tripod Stand", price: 15.49, image: "https://images.unsplash.com/photo-1598970434795-0c54fe7c0642", description: "Sturdy and adjustable tripod for photography." },
+      { id: 6, name: "Portable Charger", price: 39.95, image: "https://images.unsplash.com/photo-1549921296-3a6b53abc37c", description: "High capacity power bank to keep you charged on-the-go." },
+      { id: 7, name: "Bluetooth Speaker", price: 49.99, image: "https://images.unsplash.com/photo-1580894894512-d8b0e0f4d234", description: "Loud and clear sound with Bluetooth 5.0 connectivity." },
+      { id: 8, name: "Fitness Tracker", price: 69.99, image: "https://images.unsplash.com/photo-1584467735871-3b68f043c54d", description: "Track your steps, heart rate, and sleep quality." },
+      { id: 9, name: "Drone Camera", price: 199.99, image: "https://images.unsplash.com/photo-1512820790803-83ca734da794", description: "Capture stunning aerial shots with 4K resolution." },
+      { id: 10, name: "Wireless Earbuds", price: 89.99, image: "https://images.unsplash.com/photo-1606813902657-d43e4cccd7fc", description: "Comfortable fit and premium audio quality." },
+      { id: 11, name: "Smartwatch", price: 129.99, image: "https://images.unsplash.com/photo-1588776814546-ec7b2edc7680", description: "Stylish and functional smartwatch with fitness tracking." },
+      { id: 12, name: "Laptop Stand", price: 27.99, image: "https://images.unsplash.com/photo-1573497162493-6b1acb260509", description: "Ergonomic and adjustable laptop stand." }
+    ];
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function updateCartUI() {
+      const cartItemsEl = document.getElementById("cart-items");
+      const cartTotalEl = document.getElementById("cart-total");
+      const cartCountEl = document.getElementById("cart-count");
+      cartItemsEl.innerHTML = "";
+      let total = 0;
+
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+        cartItemsEl.appendChild(li);
+        total += item.price;
+      });
+
+      cartTotalEl.textContent = total.toFixed(2);
+      cartCountEl.textContent = cart.length;
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      cart.push(product);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartUI();
+      alert("Added to cart!");
+    }
+
+    function clearCart() {
+      cart = [];
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function renderProducts() {
+      const productList = document.querySelector(".product-list");
+      products.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product-card";
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <p><strong>$${product.price.toFixed(2)}</strong></p>
+          <button onclick="addToCart(${product.id})">Add to Cart</button>
+        `;
+        productList.appendChild(div);
+      });
+    }
+
+    renderProducts();
+    updateCartUI();
+  </script>
+</body>
+</html>
